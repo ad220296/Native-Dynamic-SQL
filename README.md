@@ -33,6 +33,18 @@ BEGIN
 END;
 ```
 
+#### ✨ Auch für DDL nutzbar:
+```sql
+EXECUTE IMMEDIATE 'CREATE TABLE test (id NUMBER)';
+```
+
+#### ⚠️ Achtung:
+```sql
+-- Das geht NICHT:
+EXECUTE IMMEDIATE 'CREATE TABLE :tabname (id NUMBER)' USING 'demo';  -- Fehler!
+```
+> ❌ Bind-Variablen können NICHT in DDL-Statements verwendet werden
+
 ---
 
 ## 🔄 2. Übergabe von Parametern mit `USING`
@@ -49,6 +61,24 @@ BEGIN
   EXECUTE IMMEDIATE sql_stmt USING v_deptno;
 END;
 ```
+
+---
+
+## 🧠 Zusatz: Einzelwert zurückgeben mit `INTO`
+
+```sql
+DECLARE
+  sql_stmt VARCHAR2(100);
+  v_ename emp.ename%TYPE;
+  v_empno NUMBER := 7788;
+BEGIN
+  sql_stmt := 'SELECT ename FROM emp WHERE empno = :1';
+  EXECUTE IMMEDIATE sql_stmt INTO v_ename USING v_empno;
+  DBMS_OUTPUT.PUT_LINE('Name: ' || v_ename);
+END;
+```
+
+> Nur möglich, wenn genau **eine Zeile** zurückgegeben wird!
 
 ---
 
@@ -77,6 +107,8 @@ BEGIN
 END;
 ```
 
+> Hinweis: Es gibt **starke** (`RETURN ...%ROWTYPE`) und **schwache** Cursor-Typen (`REF CURSOR`) – für den Test reicht das Verständnis.
+
 ---
 
 ## 📖 4. Data Dictionary (DD)
@@ -98,6 +130,7 @@ aber du solltest **verstehen**, dass man dort **Metadaten über die DB-Struktur*
 |-----------------------------|-------------------------------------|
 | Dynamisches SQL             | `EXECUTE IMMEDIATE '...'`           |
 | Parameter übergeben         | `USING`-Klausel                     |
+| Rückgabe mit `INTO`         | `EXECUTE IMMEDIATE ... INTO x`      |
 | REF CURSOR                  | Dynamisch steuerbarer Cursor        |
 | Data Dictionary (Grundlagen)| Metadaten der DB                    |
 
