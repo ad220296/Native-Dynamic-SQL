@@ -135,5 +135,94 @@ aber du solltest **verstehen**, dass man dort **Metadaten über die DB-Struktur*
 | Data Dictionary (Grundlagen)| Metadaten der DB                    |
 
 ---
+# ⚙️ Native Dynamic SQL – Quiz & Übungsbeispiel
 
-📦 Repository: `https://github.com/ad220296/NativeDynamicSQL`
+> Ergänzung zum Kapitel: Native Dynamic SQL in PL/SQL (Stand: 06.04.2025)
+
+---
+
+## 🧠 Multiple-Choice-Test – Native Dynamic SQL
+
+Wähle jeweils **eine oder mehrere** richtige Antworten!
+
+---
+
+### ❓ 1. Was macht `EXECUTE IMMEDIATE` in PL/SQL?
+
+- [x] a) Führt ein SQL-Statement zur Laufzeit aus  
+- [ ] b) Übersetzt PL/SQL in C-Code  
+- [ ] c) Führt nur DDL-Befehle aus  
+- [x] d) Kann auch mit `USING` verwendet werden  
+
+---
+
+### ❓ 2. Was passiert bei folgendem Code?
+
+```sql
+EXECUTE IMMEDIATE 'CREATE TABLE :1 (id NUMBER)' USING 'TEST';
+```
+
+- [ ] a) Die Tabelle TEST wird erstellt  
+- [x] b) Es kommt zu einem Fehler, da DDL keine Bind-Variablen erlaubt  
+- [ ] c) Der Code läuft nur im SQL*Plus  
+- [ ] d) Das Statement funktioniert, wenn es in einer Prozedur steht  
+
+---
+
+### ❓ 3. Welche Aussage zu REF CURSORs ist korrekt?
+
+- [x] a) Sie werden zur Laufzeit geöffnet  
+- [ ] b) Sie funktionieren nur mit fixen SELECTs  
+- [x] c) Man kann sie mit `OPEN FOR` starten  
+- [x] d) Sie geben mehrere Spalten zurück  
+
+---
+
+### ❓ 4. Wozu dient das Data Dictionary?
+
+- [ ] a) Zum Speichern von Benutzerdaten  
+- [x] b) Zum Abfragen von Metainformationen über Tabellen, Views usw.  
+- [x] c) Es enthält u. a. `USER_TABLES`, `ALL_OBJECTS`  
+- [ ] d) Es muss vor der Verwendung aktiviert werden  
+
+---
+
+### ❓ 5. Was ist beim Verwenden von `EXECUTE IMMEDIATE ... INTO` zu beachten?
+
+- [ ] a) Die Abfrage darf mehrere Zeilen zurückgeben  
+- [x] b) Es muss genau eine Zeile zurückkommen  
+- [x] c) Es wird oft mit `USING` kombiniert  
+- [x] d) Nur mit SELECT möglich  
+
+---
+
+## 🧩 Beispielaufgabe: Dynamisches DELETE mit Parameter
+
+### 💬 Aufgabenstellung:
+> Schreiben Sie ein PL/SQL-Programm, das eine Abteilung löscht, deren Nummer zur Laufzeit übergeben wird.
+
+---
+
+### ✅ Lösung:
+
+```sql
+DECLARE
+  v_deptno NUMBER := 50;
+BEGIN
+  EXECUTE IMMEDIATE 'DELETE FROM dept WHERE deptno = :1' USING v_deptno;
+  DBMS_OUTPUT.PUT_LINE('Abteilung gelöscht!');
+END;
+/
+```
+
+---
+
+Dieses Beispiel zeigt:
+- **EXECUTE IMMEDIATE mit USING**
+- sichere **Parameterübergabe**
+- einfache Anwendung von dynamischem SQL
+
+---
+
+✅ Damit deckt dieses Dokument alle **testrelevanten Inhalte zu Native Dynamic SQL** ab.
+
