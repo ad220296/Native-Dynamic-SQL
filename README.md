@@ -64,6 +64,23 @@ END;
 
 ---
 
+### ⚠️ Hinweis: Reihenfolge bei `USING`
+
+Die Reihenfolge in der `USING`-Klausel muss **genau zur Reihenfolge der Platzhalter `:1`, `:2`, … im SQL-String passen**.
+
+#### Beispiel:
+
+```sql
+EXECUTE IMMEDIATE
+  'SELECT sal FROM emp WHERE ename = :1 AND deptno = :2'
+  INTO v_sal
+  USING v_ename, v_deptno;
+```
+
+> 🔄 **Falsch wäre z. B.**: `USING v_deptno, v_ename;` – denn dann bekommt `:1` den falschen Wert.
+
+---
+
 ## 🧠 Zusatz: Einzelwert zurückgeben mit `INTO`
 
 ```sql
@@ -124,6 +141,22 @@ aber du solltest **verstehen**, dass man dort **Metadaten über die DB-Struktur*
 
 ---
 
+### 📘 Mini-Faktenkasten: Data Dictionary (für den Test)
+
+- Das Data Dictionary enthält **Metainformationen über die Datenbank**
+- Zugriff über `SELECT` möglich (z. B. `SELECT * FROM USER_TABLES`)
+- ❗ **Du musst keine Namen oder Spalten auswendig wissen**
+- Wenn etwas gebraucht wird, wird es **in der Aufgabenstellung angegeben**
+
+#### Beispiel (nicht prüfungsrelevant, nur zur Info):
+
+```sql
+SELECT table_name FROM user_tables;
+SELECT column_name FROM user_tab_columns WHERE table_name = 'EMP';
+```
+
+---
+
 ## ✅ Zusammenfassung
 
 | Thema                        | Beispiel / Funktion                 |
@@ -133,6 +166,7 @@ aber du solltest **verstehen**, dass man dort **Metadaten über die DB-Struktur*
 | Rückgabe mit `INTO`         | `EXECUTE IMMEDIATE ... INTO x`      |
 | REF CURSOR                  | Dynamisch steuerbarer Cursor        |
 | Data Dictionary (Grundlagen)| Metadaten der DB                    |
+
 
 ---
 # ⚙️ Native Dynamic SQL – Quiz & Übungsbeispiel
